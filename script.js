@@ -1,56 +1,104 @@
-// JavaScript code for Audio Player with Lyrics Display
+// Get elements
+const continueButton = document.getElementById('continueButton');
+const backButton = document.getElementById('backButton');
+const welcomeScreen = document.getElementById('welcomeScreen');
+const musicScreen = document.getElementById('musicScreen');
+const playBtn = document.getElementById('playBtn');
+const audioPlayer = document.getElementById('audioPlayer');
+const lyricsDisplay = document.getElementById('lyricsDisplay');
+const currentTimeEl = document.getElementById('currentTime');
+const durationEl = document.getElementById('duration');
+const progressFill = document.getElementById('progressFill');
+const progressBar = document.querySelector('.progress-bar');
 
-// Variables for audio player components
-const audio = new Audio('your-audio-file.mp3'); // Make sure to replace with your audio file
-const playButton = document.getElementById('playPauseButton');
-const progressBar = document.getElementById('progressBar');
-const lyricsDisplay = document.getElementById('lyrics');
-
-// Example lyrics
-const lyrics = [
-    "Verse 1: These are the lyrics to your song. It's gonna be great!",
-    "Chorus: And this is the chorus where everything comes together!",
-    "Verse 2: More lyrics are displayed here.",
-    "Chorus: And we repeat the chorus!"
+// Song lyrics that match the song
+const songLyrics = [
+    "My baby, My valentine",
+    "You are the one I want",
+    "Love nwantiti baby",
+    "My love, My darling",
+    "Forever with you"
 ];
 
+let isPlaying = false;
 let currentLyricIndex = 0;
 
-// Function to play or pause audio
-playButton.addEventListener('click', function() {
-    if (audio.paused) {
-        audio.play();
-        playButton.textContent = 'Pause';
+// Continue button - go to music screen
+continueButton.addEventListener('click', function() {
+    welcomeScreen.classList.remove('active');
+    musicScreen.classList.add('active');
+});
+
+// Back button - go to welcome screen
+backButton.addEventListener('click', function() {
+    musicScreen.classList.remove('active');
+    welcomeScreen.classList.add('active');
+    audioPlayer.pause();
+    isPlaying = false;
+    playBtn.textContent = '▶';
+});
+
+// Play/Pause button
+playBtn.addEventListener('click', function() {
+    if (isPlaying) {
+        audioPlayer.pause();
+        playBtn.textContent = '▶';
+        isPlaying = false;
     } else {
-        audio.pause();
-        playButton.textContent = 'Play';
+        audioPlayer.play();
+        playBtn.textContent = '⏸';
+        isPlaying = true;
     }
 });
 
-// Update progress bar as audio plays
-audio.addEventListener('timeupdate', function() {
-    const progressPercent = (audio.currentTime / audio.duration) * 100;
-    progressBar.value = progressPercent;
-    updateLyrics(); // Display corresponding lyrics
+// Update time display
+audioPlayer.addEventListener('timeupdate', function() {
+    // Update progress bar
+    const percentage = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    progressFill.style.width = percentage + '%';
+    
+    // Update current time
+    currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+    
+    // Update lyrics based on current time
+    updateLyrics();
 });
 
-// Function to update the displayed lyrics
-function updateLyrics() {
-    const currentTime = audio.currentTime;
-    if (currentLyricIndex < lyrics.length && currentTime > (currentLyricIndex + 1) * (audio.duration / lyrics.length)) {
-        currentLyricIndex++;
-    }
-    lyricsDisplay.textContent = lyrics[currentLyricIndex];
+// When audio ends
+audioPlayer.addEventListener('ended', function() {
+    playBtn.textContent = '▶';
+    isPlaying = false;
+    audioPlayer.currentTime = 0;
+    progressFill.style.width = '0%';
+});
+
+// When audio loads
+audioPlayer.addEventListener('loadedmetadata', function() {
+    durationEl.textContent = formatTime(audioPlayer.duration);
+});
+
+// Click on progress bar to seek
+progressBar.addEventListener('click', function(e) {
+    const rect = progressBar.getBoundingClientRect();
+    const percentage = (e.clientX - rect.left) / rect.width;
+    audioPlayer.currentTime = percentage * audioPlayer.duration;
+});
+
+// Format time in MM:SS
+function formatTime(seconds) {
+    if (isNaN(seconds)) return '0:00';
+    const minutes = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
 }
 
-// Function to seek audio on progress bar change
-progressBar.addEventListener('input', function() {
-    const newTime = (progressBar.value / 100) * audio.duration;
-    audio.currentTime = newTime;
-});
-
-// Screen transitions (example placeholder)
-function transitionToNextScreen() {
-    // Implement your screen transition logic here.
-    console.log('Transitioning to next screen...');
+// Update lyrics based on song progress
+function updateLyrics() {
+    const progress = audioPlayer.currentTime / audioPlayer.duration;
+    const lyricIndex = Math.floor(progress * songLyrics.length);
+    
+    if (lyricIndex < songLyrics.length && lyricIndex !== currentLyricIndex) {
+        currentLyricIndex = lyricIndex;
+        lyricsDisplay.textContent = songLyrics[currentLyricIndex];
+    }
 }
