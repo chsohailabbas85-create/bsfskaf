@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Nwantiti - Valentine's Day</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div class="screen" id="welcomeScreen">
+        <div class="welcome-container">
+            <div class="heart-icon">❤️</div>
+            <h1>Happy Valentine Day Darling</h1>
+            <button id="continueButton" class="continue-btn">Continue</button>
+        </div>
+    </div>
+
+    <!-- Music Player Screen -->
+    <div class="screen" id="musicScreen" style="display: none;">
+        <div class="music-container">
+            <div class="header">
+                <button class="back-btn">❤️ Back</button>
+                <span class="song-title">🎵 Love Nwantiti - CKay</span>
+            </div>
+
+            <div class="player-content">
+                <div class="decorative-hearts">
+                    <span class="heart">❤️</span>
+                    <span class="heart">❤️</span>
+                    <span class="heart">❤️</span>
+                </div>
+
+                <div class="now-playing">NOW PLAYING</div>
+                <h2 class="lyrics-display">My baby, My valentine</h2>
+
+                <div class="progress-bar-container">
+                    <span class="time">0:00</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <span class="duration">0:30</span>
+                </div>
+
+                <div class="player-controls">
+                    <button class="play-btn" id="playBtn">▶</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="audioPlayer">
+        <source src="love-nwantiti.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
