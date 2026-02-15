@@ -8,7 +8,7 @@
 </head>
 <body>
     <!-- Welcome Screen -->
-    <div class="screen" id="welcomeScreen">
+    <div id="welcomeScreen" class="screen active">
         <div class="welcome-container">
             <div class="heart-icon">❤️</div>
             <h1>Happy Valentine Day Darling</h1>
@@ -17,10 +17,10 @@
     </div>
 
     <!-- Music Player Screen -->
-    <div class="screen" id="musicScreen" style="display: none;">
+    <div id="musicScreen" class="screen">
         <div class="music-container">
             <div class="header">
-                <button class="back-btn">❤️ Back</button>
+                <button id="backButton" class="back-btn">❤️ Back</button>
                 <span class="song-title">🎵 Love Nwantiti - CKay</span>
             </div>
 
@@ -32,14 +32,14 @@
                 </div>
 
                 <div class="now-playing">NOW PLAYING</div>
-                <h2 class="lyrics-display">My baby, My valentine</h2>
+                <h2 class="lyrics-display" id="lyricsDisplay">My baby, My valentine</h2>
 
                 <div class="progress-bar-container">
-                    <span class="time">0:00</span>
+                    <span class="time" id="currentTime">0:00</span>
                     <div class="progress-bar">
-                        <div class="progress-fill"></div>
+                        <div class="progress-fill" id="progressFill"></div>
                     </div>
-                    <span class="duration">0:30</span>
+                    <span class="duration" id="duration">0:30</span>
                 </div>
 
                 <div class="player-controls">
@@ -52,7 +52,6 @@
     <!-- Audio Element -->
     <audio id="audioPlayer">
         <source src="love-nwantiti.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
     </audio>
 
     <script src="script.js"></script>
